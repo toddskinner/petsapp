@@ -119,13 +119,12 @@ public class EditorActivity extends AppCompatActivity {
     private void insertPet(){
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
-        int genderInt = mGender;
         int weightInteger = parseInt(mWeightEditText.getText().toString().trim());
 
         ContentValues values = new ContentValues();
         values.put(PetContract.PetEntry.COLUMN_PET_NAME, nameString);
         values.put(PetContract.PetEntry.COLUMN_PET_BREED, breedString);
-        values.put(PetContract.PetEntry.COLUMN_PET_GENDER, genderInt);
+        values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weightInteger);
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
