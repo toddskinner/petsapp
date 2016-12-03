@@ -15,8 +15,10 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -127,15 +129,12 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weightInteger);
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
+        Uri newUri = getContentResolver().insert(PetContract.PetEntry.CONTENT_URI, values);
 
-        Log.v("EditorActivity", "New row ID " + newRowId);
-
-        if(newRowId != -1){
-            Toast.makeText(this, "Pet saved with id: " + newRowId, Toast.LENGTH_SHORT).show();
+        if(newUri != null){
+            Toast.makeText(this, R.string.toast_success, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error with saving pet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_fail, Toast.LENGTH_SHORT).show();
         }
     }
 

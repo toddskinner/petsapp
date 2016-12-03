@@ -15,10 +15,12 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -73,11 +75,9 @@ public class CatalogActivity extends AppCompatActivity {
      */
     private void displayDatabaseInfo() {
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         String[] projection = { PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT };
-        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
+
+        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
 
         TextView displayView = (TextView) findViewById(R.id.text_view_pet);
 
@@ -118,7 +118,6 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertPet(){
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -127,10 +126,7 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, PetContract.PetEntry.GENDER_MALE);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
-
-        Log.v("CategoryActivity", "New row ID " + newRowId);
+        getContentResolver().insert(PetEntry.CONTENT_URI, values);
     }
 
     @Override
