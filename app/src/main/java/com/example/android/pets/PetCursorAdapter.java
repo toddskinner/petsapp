@@ -9,8 +9,10 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.support.v4.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.example.android.pets.data.PetContract;
 
 import static android.R.attr.priority;
 
@@ -61,8 +63,8 @@ public class PetCursorAdapter extends CursorAdapter {
         TextView petName = (TextView) view.findViewById(R.id.name);
         TextView petBreed = (TextView) view.findViewById(R.id.breed);
         // Extract properties from cursor
-        String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-        String breed = cursor.getString(cursor.getColumnIndexOrThrow("breed"));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_NAME));
+        String breed = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_BREED));
         // Populate fields with extracted properties
         petName.setText(name);
         petBreed.setText(breed);

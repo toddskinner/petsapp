@@ -62,4 +62,8 @@
     <string name="toast_fail">Error with saving pet</string>
 
     <string name="toast_success">Pet saved</string>
+
+    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+
+    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
 </resources>
