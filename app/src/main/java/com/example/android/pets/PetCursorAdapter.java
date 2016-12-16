@@ -6,6 +6,7 @@ package com.example.android.pets;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.android.pets.data.PetContract;
 
 import static android.R.attr.priority;
+import static com.example.android.pets.R.id.breed;
 
 /**
  * {@link PetCursorAdapter} is an adapter for a list or grid view
@@ -61,12 +63,17 @@ public class PetCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
         TextView petName = (TextView) view.findViewById(R.id.name);
-        TextView petBreed = (TextView) view.findViewById(R.id.breed);
+        TextView petBreed = (TextView) view.findViewById(breed);
         // Extract properties from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_NAME));
         String breed = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_BREED));
         // Populate fields with extracted properties
         petName.setText(name);
-        petBreed.setText(breed);
+        if(!TextUtils.isEmpty(breed)){
+            petBreed.setText(breed);
+        } else {
+            petBreed.setText(R.string.unknown_breed);
+        }
+
     }
 }
