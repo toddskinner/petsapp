@@ -142,7 +142,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    private void insertPet(){
+    private void savePet(){
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         int weightInteger = parseInt(mWeightEditText.getText().toString().trim());
@@ -153,12 +153,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weightInteger);
 
-        Uri newUri = getContentResolver().insert(PetContract.PetEntry.CONTENT_URI, values);
+        if(mCurrentPetUri != null){
+            int editedUri = getContentResolver().update(mCurrentPetUri, values, null, null);
 
-        if(newUri != null){
-            Toast.makeText(this, R.string.toast_success, Toast.LENGTH_SHORT).show();
+            if (editedUri != 0) {
+                Toast.makeText(this, R.string.toast_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.toast_fail, Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, R.string.toast_fail, Toast.LENGTH_SHORT).show();
+            Uri newUri = getContentResolver().insert(PetContract.PetEntry.CONTENT_URI, values);
+
+            if (newUri != null) {
+                Toast.makeText(this, R.string.toast_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.toast_fail, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -177,7 +187,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 //save pet to database
-                insertPet();
+                savePet();
                 //exit activity
                 finish();
                 return true;
