@@ -145,7 +145,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void savePet(){
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
-        int weightInteger = parseInt(mWeightEditText.getText().toString().trim());
+        int weightInteger = 0;
+
+        if(mCurrentPetUri == null && TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) && TextUtils.isEmpty(mWeightEditText.getText()) && mGender == PetContract.PetEntry.GENDER_UNKNOWN){
+            return;
+        }
+
+        if (!TextUtils.isEmpty(mWeightEditText.getText())) {
+            weightInteger = parseInt(mWeightEditText.getText().toString().trim());;
+        }
 
         ContentValues values = new ContentValues();
         values.put(PetContract.PetEntry.COLUMN_PET_NAME, nameString);
