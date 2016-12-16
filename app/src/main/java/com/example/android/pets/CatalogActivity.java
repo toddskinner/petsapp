@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -83,6 +84,21 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         //There is no pet data yet (until the loader finishes) so pass in null for the Cursor
         mCursorAdapter = new PetCursorAdapter(this, null);
         petListView.setAdapter(mCursorAdapter);
+
+        //setup item click listener
+        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+
+                Uri currentPetUri = ContentUris.withAppendedId(PetEntry.CONTENT_URI, id);
+
+                //set the uri on the data field of the intent
+                intent.setData(currentPetUri);
+
+                startActivity(intent);
+            }
+        });
 
         //kick off the loader
         getLoaderManager().initLoader(PET_URL_LOADER, null, this);
